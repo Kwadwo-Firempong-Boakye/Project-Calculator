@@ -1,0 +1,119 @@
+:root {
+    --container: #16161e;
+    --space: #102640;
+    --numbers-background: #221540;
+    --enter-background: #3f589c;
+    --operators: #c5ba2f;
+    --operators-alternative: #ff862c;
+    --display-text: #fff;
+    --calc-display: #0771a6;
+    --button-container: #003048;
+    --background: #248cc0;
+    --shadow: #0f3762;
+}
+ 
+body {
+    margin: 0;
+    padding: 0;
+    color: var(--display-text);
+    font-family: 'Exo 2', sans-serif;
+    font-size: 20px;
+    background: var(--background);
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+    color: var(--operators);
+    transition: all 0.3s ease-in-out;
+}
+
+a:hover {
+    color: var(--background);
+}
+
+.container {
+    max-width: 350px;
+    margin: 50px auto;
+}
+
+.calc-display {
+    height: 120px;
+    background-color: var(--calc-display);
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    border-radius: 0 30px 0 0;
+    box-shadow: 2px 2px 2px var(--background), 2px 10px 7px var(--shadow), -1px -1px 7px rgb(174, 208, 255);
+}
+
+.calc-text {
+    text-align: right;
+    margin: 0;
+    padding-right: 10px;
+    font-size: 60px;
+}
+
+.buttons-container {
+    background-color: var(--button-container);
+    display: flex;
+    flex-direction: column;
+    font-size: 30px;
+    border-radius: 0 0 0 30px;
+    box-shadow: 2px 2px 2px var(--background), 3px 7px 7px var(--shadow);
+}
+
+.button-rows {
+    display: flex;
+    width: 100%;
+}
+
+.button {
+    width: 25%;
+    text-align: center;
+    border-width: 1px;
+    border-color: var(--space);
+    border-top-style: solid;
+    border-right-style: solid;
+    border-bottom-style: none;
+    border-left-style: none;
+    padding: 20px 0;
+    transition: all 0.2s ease-out;
+}
+
+.button.backspace {
+    font-size: 37px; 
+}
+
+.button.operator {
+    font-weight: 600;
+}
+
+.button.enter {
+    color: var(--operators);
+    font-weight: 600;
+}
+
+.button:hover {
+    background-color: #06405d;
+    cursor: pointer;
+}
+.button:active {
+    padding: 21px 0;
+    font-size: 25px;
+}
+
+.number {
+    background-color: #022c41;
+}
+
+.number.corner {
+    border-radius: 0 0 0 30px;
+}
+
+.calc-footer {
+    background-color: var(--button-container);
+    font-size: 18px;
+    padding: 1px 10px;
+    text-align: center;
+}
