@@ -112,3 +112,6 @@ function clickSupport(e) {
 }
 
 
+function stringToNumber (string) {
+	return +(string);
+}
