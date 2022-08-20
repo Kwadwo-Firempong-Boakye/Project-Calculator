@@ -69,5 +69,46 @@ const operate = function (firstInput, operator, secondInput) {
 	}
 };
 
-// let test = operate(10000000000, "+", 1);
-// console.log(test);
+///////////////////////////////////////////////////////////////////////
+
+//Global Variables
+let input = "";
+
+//DOM Definitions
+
+let displayText = document.querySelector(".calc-text");
+const calcButtons = document.querySelectorAll(".button");
+
+//DOM Event Listeners
+window.addEventListener("keydown", keyboardSupport);
+
+calcButtons.forEach((button) => {
+	button.addEventListener("click", clickSupport);
+});
+
+//DOM Functions
+
+function keyboardSupport(e) {
+	const keyButton = document.querySelector(`.button[data-key="${e.key}"]`);
+
+	if (keyButton !== null) {
+		let isDisplayEligible = keyButton.getAttribute("data-display");
+		if (isDisplayEligible == "yes" && input.length < 9) {
+			input += keyButton.innerText;
+		}
+	}
+	displayText.innerText = input;
+}
+
+function clickSupport(e) {
+	const clickedButton = e.target;
+	let isDisplayEligible = clickedButton.getAttribute("data-display");
+
+	if (isDisplayEligible == "yes" && input.length < 9) {
+		input += clickedButton.innerText;
+	}
+
+	displayText.innerText = input;
+}
+
+
