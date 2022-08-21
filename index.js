@@ -1,3 +1,11 @@
+//Global Variables
+let input = "";
+let firstInputValue = 0;
+let secondInputValue = 0;
+let operatorValue = "+";
+let currentOperationValue = 0;
+let operationsCount = 0;
+
 //Calculator Operator Functions
 
 const add = function (firstInput, secondInput) {
@@ -31,6 +39,11 @@ const root = function (firstInput) {
 // Calculator Operate Function
 
 const operate = function (firstInput, operator, secondInput) {
+
+	//Document that operation has been called
+	operationsCount++;
+
+	//Begin Operation
 	let output;
 
 	switch (operator) {
@@ -67,16 +80,10 @@ const operate = function (firstInput, operator, secondInput) {
 	} else {
 		return output;
 	}
+
 };
 
 ///////////////////////////////////////////////////////////////////////
-
-//Global Variables
-let input = "";
-let firstInputValue = 0;
-let secondInputValue = 0;
-let operatorValue = "";
-let currentDisplayValue = 0;
 
 //DOM Definitions
 
@@ -123,6 +130,9 @@ function keyboardSupport(e) {
 			displayText.innerText = input;
 
 		} else if (isDisplayEligible == "yes" && input.length < 9) {
+			if (operationsCount !== 0) {
+				resetGlobal();
+			}
 			input += keyButton.innerText;
 			displayText.innerText = input;
 
@@ -149,6 +159,10 @@ function clickSupport(e) {
 		input = updatedInput;
 
 	} else if (isDisplayEligible == "yes" && input.length < 9) {
+		if (currentOperationValue !== 0) {
+			resetGlobal();
+
+		} 
 		input += clickedButton.innerText;
 
 	} 
@@ -160,9 +174,10 @@ function clickSupport(e) {
 
 function mountInitialValues() {
 
-	if (currentDisplayValue != 0) {
-		firstInputValue = +currentDisplayValue;
-		displaySubtext.innerText = `${currentDisplayValue} ${operatorValue}`;
+	if (currentOperationValue != 0) {
+		firstInputValue = +currentOperationValue;
+		displaySubtext.innerText = `${currentOperationValue} ${operatorValue}`;
+		
 	} else {
 		firstInputValue = +(input);
 		displaySubtext.innerText = `${firstInputValue} ${operatorValue}`;
@@ -175,12 +190,13 @@ function mountInitialValues() {
 function startOperation() {
 	secondInputValue = +input;
 	displaySubtext.innerText += ` ${secondInputValue}`;
-	currentDisplayValue = operate(
+	currentOperationValue = operate(
 		firstInputValue,
 		operatorValue,
 		secondInputValue
 	);
-	displayText.innerText = currentDisplayValue;
+	displayText.innerText = currentOperationValue;
+	input = ""
 }
 
 function resetGlobal() {
@@ -188,9 +204,27 @@ function resetGlobal() {
 	firstInputValue = 0;
 	secondInputValue = 0;
 	operatorValue = "";
-	currentDisplayValue = 0;
-	displayText.innerText = currentDisplayValue;
-	displaySubtext.innerText = currentDisplayValue;
+	currentOperationValue = 0;
+	displayText.innerText = currentOperationValue;
+	displaySubtext.innerText = currentOperationValue;
 }
 
-// OPERATOR SUPPORT ON KEYBOARD, CONSECUTIVE ENTRY WITHOUT PRESSING ENTER
+function liteResetGlobal() {
+	firstInputValue = 0;
+	secondInputValue = 0;
+	operatorValue = "";
+	currentOperationValue = 0;
+	displayText.innerText = currentOperationValue;
+	displaySubtext.innerText = currentOperationValue;
+}
+
+
+
+// CONSECUTIVE ENTRY WITHOUT PRESSING ENTER
+//if operator pressed after startOperation, then --->
+//input = ""
+//subdisplay == currentoperation value + operatorValue
+//firstInputValue = currentoperation
+//secondInputvalue = +input
+//current operation = operate
+//main display = current
