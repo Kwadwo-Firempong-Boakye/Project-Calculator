@@ -209,14 +209,6 @@ function resetGlobal() {
 	displaySubtext.innerText = currentOperationValue;
 }
 
-function liteResetGlobal() {
-	firstInputValue = 0;
-	secondInputValue = 0;
-	operatorValue = "";
-	currentOperationValue = 0;
-	displayText.innerText = currentOperationValue;
-	displaySubtext.innerText = currentOperationValue;
-}
 
 
 
