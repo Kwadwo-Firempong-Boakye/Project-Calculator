@@ -39,7 +39,6 @@ const root = function (firstInput) {
 // Calculator Operate Function
 
 const operate = function (firstInput, operator, secondInput) {
-
 	//Document that operation has been called
 	operationsCount++;
 
@@ -80,7 +79,6 @@ const operate = function (firstInput, operator, secondInput) {
 	} else {
 		return output;
 	}
-
 };
 
 ///////////////////////////////////////////////////////////////////////
@@ -93,7 +91,7 @@ const calcButtons = document.querySelectorAll(".button");
 let operatorButtons = document.querySelectorAll(".operator");
 const enterButton = document.querySelector(".enter");
 const clearButton = document.querySelector(".clear");
-const backspace = document.querySelector(".backspace")
+const backspace = document.querySelector(".backspace");
 
 //DOM Event Listeners
 window.addEventListener("keydown", keyboardSupport);
@@ -125,12 +123,12 @@ function keyboardSupport(e) {
 		let isEnter = keyButton.getAttribute("data-key");
 
 		if (isBackspace == "Backspace") {
-			let updatedInput = input.slice(0, input.length-1);
+			let updatedInput = input.slice(0, input.length - 1);
 			input = updatedInput;
 			displayText.innerText = input;
 
 		} else if (isDisplayEligible == "yes" && input.length < 9) {
-			if (operationsCount !== 0) {
+			if (currentOperationValue !== 0) {
 				resetGlobal();
 			}
 			input += keyButton.innerText;
@@ -144,9 +142,7 @@ function keyboardSupport(e) {
 		} else if (isEnter == "Enter") {
 			startOperation();
 		}
-		
-	} 
-	
+	}
 }
 
 function clickSupport(e) {
@@ -155,31 +151,28 @@ function clickSupport(e) {
 	let isDisplayEligible = clickedButton.getAttribute("data-display");
 
 	if (isBackspace == "Backspace") {
-		let updatedInput = input.slice(0, input.length-1);
+		let updatedInput = input.slice(0, input.length - 1);
 		input = updatedInput;
 
 	} else if (isDisplayEligible == "yes" && input.length < 9) {
 		if (currentOperationValue !== 0) {
 			resetGlobal();
 
-		} 
+		}
 		input += clickedButton.innerText;
+	}
 
-	} 
-	
 	displayText.innerText = input;
 }
 
 // Calculator Procedure Functions
 
 function mountInitialValues() {
-
 	if (currentOperationValue != 0) {
 		firstInputValue = +currentOperationValue;
 		displaySubtext.innerText = `${currentOperationValue} ${operatorValue}`;
-		
 	} else {
-		firstInputValue = +(input);
+		firstInputValue = +input;
 		displaySubtext.innerText = `${firstInputValue} ${operatorValue}`;
 	}
 
@@ -196,7 +189,7 @@ function startOperation() {
 		secondInputValue
 	);
 	displayText.innerText = currentOperationValue;
-	input = ""
+	input = "";
 }
 
 function resetGlobal() {
@@ -208,9 +201,6 @@ function resetGlobal() {
 	displayText.innerText = currentOperationValue;
 	displaySubtext.innerText = currentOperationValue;
 }
-
-
-
 
 // CONSECUTIVE ENTRY WITHOUT PRESSING ENTER
 //if operator pressed after startOperation, then --->
