@@ -85,6 +85,8 @@ let displaySubtext = document.querySelector(".calc-subtext");
 const calcButtons = document.querySelectorAll(".button");
 let operatorButtons = document.querySelectorAll(".operator");
 const enterButton = document.querySelector(".enter");
+const clearButton = document.querySelector(".clear");
+const backspace = document.querySelector(".backspace")
 
 //DOM Event Listeners
 window.addEventListener("keydown", keyboardSupport);
@@ -94,11 +96,16 @@ calcButtons.forEach((button) => {
 });
 
 operatorButtons.forEach((button) => {
-	button.addEventListener("keydown", mountInitialValues);
-	button.addEventListener("click", mountInitialValues);
+	button.addEventListener("click", (e) => {
+		operatorValue = e.target.getAttribute("data-key");
+		mountInitialValues();
+	});
 });
 
 enterButton.addEventListener("click", startOperation);
+
+clearButton.addEventListener("click", resetGlobal);
+
 
 //DOM Functions
 
@@ -106,46 +113,80 @@ function keyboardSupport(e) {
 	const keyButton = document.querySelector(`.button[data-key="${e.key}"]`);
 
 	if (keyButton !== null) {
+		let isBackspace = keyButton.getAttribute("data-key");
 		let isDisplayEligible = keyButton.getAttribute("data-display");
-		if (isDisplayEligible == "yes" && input.length < 9) {
+		let isOperator = keyButton.getAttribute("class");
+
+		if (isBackspace == "Backspace") {
+			let updatedInput = input.slice(0, input.length-1);
+			input = updatedInput;
+
+		} else if (isDisplayEligible == "yes" && input.length < 9) {
 			input += keyButton.innerText;
+
+		} else if (isOperator == "operator button") {
+			operatorValue = keyButton.getAttribute("data-key");
+			mountInitialValues();
 		}
-	}
+		
+	} 
 	displayText.innerText = input;
 }
 
 function clickSupport(e) {
 	const clickedButton = e.target;
+	let isBackspace = clickedButton.getAttribute("data-key");
 	let isDisplayEligible = clickedButton.getAttribute("data-display");
+	let isOperator = clickedButton.getAttribute("class");
+	
+	if (isBackspace == "Backspace") {
+		let updatedInput = input.slice(0, input.length-1);
+		input = updatedInput;
 
-	if (isDisplayEligible == "yes" && input.length < 9) {
+	} else if (isDisplayEligible == "yes" && input.length < 9) {
 		input += clickedButton.innerText;
-	}
+
+	} 
+	
 
 	displayText.innerText = input;
 }
 
 // Calculator Procedure Functions
 
-function mountInitialValues (e) {
-	operatorValue = e.target.getAttribute("data-key");
+function mountInitialValues() {
 
 	if (currentDisplayValue != 0) {
-		firstInputValue = +(currentDisplayValue);
+		firstInputValue = +currentDisplayValue;
 		displaySubtext.innerText = `${currentDisplayValue} ${operatorValue}`;
 	} else {
 		firstInputValue = +(input);
 		displaySubtext.innerText = `${firstInputValue} ${operatorValue}`;
 	}
-
+5
 	input = "";
 	displayText.innerText = input;
 }
 
-function startOperation () {
-	secondInputValue = +(input);
+function startOperation() {
+	secondInputValue = +input;
 	displaySubtext.innerText += ` ${secondInputValue}`;
-	currentDisplayValue = operate(firstInputValue, operatorValue, secondInputValue);
+	currentDisplayValue = operate(
+		firstInputValue,
+		operatorValue,
+		secondInputValue
+	);
 	displayText.innerText = currentDisplayValue;
 }
 
+function resetGlobal() {
+	input = "";
+	firstInputValue = 0;
+	secondInputValue = 0;
+	operatorValue = "";
+	currentDisplayValue = 0;
+	displayText.innerText = currentDisplayValue;
+	displaySubtext.innerText = currentDisplayValue;
+}
+
+// OPERATOR SUPPORT ON KEYBOARD, CONSECUTIVE ENTRY WITHOUT PRESSING ENTER
