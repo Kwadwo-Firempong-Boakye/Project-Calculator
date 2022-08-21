@@ -106,7 +106,6 @@ enterButton.addEventListener("click", startOperation);
 
 clearButton.addEventListener("click", resetGlobal);
 
-
 //DOM Functions
 
 function keyboardSupport(e) {
@@ -116,29 +115,35 @@ function keyboardSupport(e) {
 		let isBackspace = keyButton.getAttribute("data-key");
 		let isDisplayEligible = keyButton.getAttribute("data-display");
 		let isOperator = keyButton.getAttribute("class");
+		let isEnter = keyButton.getAttribute("data-key");
 
 		if (isBackspace == "Backspace") {
 			let updatedInput = input.slice(0, input.length-1);
 			input = updatedInput;
+			displayText.innerText = input;
 
 		} else if (isDisplayEligible == "yes" && input.length < 9) {
 			input += keyButton.innerText;
+			displayText.innerText = input;
 
 		} else if (isOperator == "operator button") {
 			operatorValue = keyButton.getAttribute("data-key");
 			mountInitialValues();
+			displayText.innerText = input;
+
+		} else if (isEnter == "Enter") {
+			startOperation();
 		}
 		
 	} 
-	displayText.innerText = input;
+	
 }
 
 function clickSupport(e) {
 	const clickedButton = e.target;
 	let isBackspace = clickedButton.getAttribute("data-key");
 	let isDisplayEligible = clickedButton.getAttribute("data-display");
-	let isOperator = clickedButton.getAttribute("class");
-	
+
 	if (isBackspace == "Backspace") {
 		let updatedInput = input.slice(0, input.length-1);
 		input = updatedInput;
@@ -148,7 +153,6 @@ function clickSupport(e) {
 
 	} 
 	
-
 	displayText.innerText = input;
 }
 
@@ -163,7 +167,7 @@ function mountInitialValues() {
 		firstInputValue = +(input);
 		displaySubtext.innerText = `${firstInputValue} ${operatorValue}`;
 	}
-5
+
 	input = "";
 	displayText.innerText = input;
 }
