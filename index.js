@@ -1,8 +1,9 @@
 //Global Variables
 let input = "";
-let firstInputValue = 0;
-let secondInputValue = 0;
-let operatorValue = "+";
+let firstInputValue;
+let secondInputValue;
+let operatorValue;
+let tempOperatorValue;
 let currentOperationValue = 0;
 let operationsCount = 0;
 
@@ -22,7 +23,7 @@ const multiply = function (firstInput, secondInput) {
 
 const divide = function (firstInput, secondInput) {
 	if (secondInput === 0) {
-		return "indivisible";
+		return 0;
 	} else {
 		return firstInput / secondInput;
 	}
@@ -71,10 +72,7 @@ const operate = function (firstInput, operator, secondInput) {
 
 	//Limit Output Length
 
-	if (
-		(output < 1 && output.toString().length > 9) ||
-		output.toString().length > 9
-	) {
+	if (output.toString().length > 9) {
 		return output.toExponential(4);
 	} else {
 		return output;
@@ -94,7 +92,7 @@ const clearButton = document.querySelector(".clear");
 const backspace = document.querySelector(".backspace");
 
 //DOM Event Listeners
-window.addEventListener("keydown", keyboardSupport);
+// window.addEventListener("keydown", keyboardSupport);
 
 calcButtons.forEach((button) => {
 	button.addEventListener("click", clickSupport);
@@ -103,47 +101,15 @@ calcButtons.forEach((button) => {
 operatorButtons.forEach((button) => {
 	button.addEventListener("click", (e) => {
 		operatorValue = e.target.getAttribute("data-key");
-		mountInitialValues();
+		mountInitialValues(e);
 	});
 });
 
-enterButton.addEventListener("click", startOperation);
-
 clearButton.addEventListener("click", resetGlobal);
 
+// enterButton.addEventListener("click", startOperation);
+
 //DOM Functions
-
-function keyboardSupport(e) {
-	const keyButton = document.querySelector(`.button[data-key="${e.key}"]`);
-
-	if (keyButton !== null) {
-		let isBackspace = keyButton.getAttribute("data-key");
-		let isDisplayEligible = keyButton.getAttribute("data-display");
-		let isOperator = keyButton.getAttribute("class");
-		let isEnter = keyButton.getAttribute("data-key");
-
-		if (isBackspace == "Backspace") {
-			let updatedInput = input.slice(0, input.length - 1);
-			input = updatedInput;
-			displayText.innerText = input;
-
-		} else if (isDisplayEligible == "yes" && input.length < 9) {
-			if (currentOperationValue !== 0) {
-				resetGlobal();
-			}
-			input += keyButton.innerText;
-			displayText.innerText = input;
-
-		} else if (isOperator == "operator button") {
-			operatorValue = keyButton.getAttribute("data-key");
-			mountInitialValues();
-			displayText.innerText = input;
-
-		} else if (isEnter == "Enter") {
-			startOperation();
-		}
-	}
-}
 
 function clickSupport(e) {
 	const clickedButton = e.target;
@@ -153,12 +119,7 @@ function clickSupport(e) {
 	if (isBackspace == "Backspace") {
 		let updatedInput = input.slice(0, input.length - 1);
 		input = updatedInput;
-
 	} else if (isDisplayEligible == "yes" && input.length < 9) {
-		if (currentOperationValue !== 0) {
-			resetGlobal();
-
-		}
 		input += clickedButton.innerText;
 	}
 
@@ -167,30 +128,71 @@ function clickSupport(e) {
 
 // Calculator Procedure Functions
 
-function mountInitialValues() {
-	if (currentOperationValue != 0) {
-		firstInputValue = +currentOperationValue;
-		displaySubtext.innerText = `${currentOperationValue} ${operatorValue}`;
-	} else {
-		firstInputValue = +input;
-		displaySubtext.innerText = `${firstInputValue} ${operatorValue}`;
+function mountInitialValues(e) {
+
+	if (operationsCount == 0) { 
+		if (+input == 0) {
+			displaySubtext.innerText = `${currentOperationValue} ${operatorValue}`;
+			input = "";
+			displayText.innerText = input;
+			tempOperatorValue = operatorValue;
+
+		} else {
+			if (tempOperatorValue === undefined) {
+				tempOperatorValue = operatorValue;
+			}
+
+			if (currentOperationValue == 0 && (operatorValue == "*" || operatorValue == "/")) {
+				currentOperationValue = 1;
+			}
+
+			firstInputValue = +input;
+			currentOperationValue = operate(firstInputValue, tempOperatorValue, currentOperationValue);
+			displaySubtext.innerText = `${currentOperationValue} ${operatorValue}`;
+			input = "";
+			displayText.innerText = input;
+			tempOperatorValue = operatorValue;
+
+		}
+
+	} else if (operationsCount > 0) {
+
+		if (input == "") {
+			//Do not operate. Just change operation variables
+			displaySubtext.innerText = `${currentOperationValue} ${operatorValue}`;
+			input = "";
+			displayText.innerText = input;
+			tempOperatorValue = operatorValue;
+
+		} else {
+			secondInputValue = +input;
+			currentOperationValue = operate(
+				currentOperationValue,
+				tempOperatorValue,
+				+secondInputValue
+			);
+			displaySubtext.innerText = `${currentOperationValue} ${operatorValue}`;
+			tempOperatorValue = operatorValue;
+			input = "";
+			displayText.innerText = input;
+
+		}
+
+
 	}
-
-	input = "";
-	displayText.innerText = input;
 }
 
-function startOperation() {
-	secondInputValue = +input;
-	displaySubtext.innerText += ` ${secondInputValue}`;
-	currentOperationValue = operate(
-		firstInputValue,
-		operatorValue,
-		secondInputValue
-	);
-	displayText.innerText = currentOperationValue;
-	input = "";
-}
+// function startOperation () {
+// 	secondInputValue = +input;
+// 	displaySubtext.innerText += ` ${secondInputValue}`;
+// 	currentOperationValue = operate(
+// 		firstInputValue,
+// 		operatorValue,
+// 		secondInputValue
+// 	);
+// 	displayText.innerText = currentOperationValue;
+// 	input = "";
+// }
 
 function resetGlobal() {
 	input = "";
@@ -202,11 +204,36 @@ function resetGlobal() {
 	displaySubtext.innerText = currentOperationValue;
 }
 
-// CONSECUTIVE ENTRY WITHOUT PRESSING ENTER
-//if operator pressed after startOperation, then --->
-//input = ""
-//subdisplay == currentoperation value + operatorValue
-//firstInputValue = currentoperation
-//secondInputvalue = +input
-//current operation = operate
-//main display = current
+// function keyboardSupport(e) {
+// 	const keyButton = document.querySelector(`.button[data-key="${e.key}"]`);
+
+// 	if (keyButton !== null) {
+// 		let isBackspace = keyButton.getAttribute("data-key");
+// 		let isDisplayEligible = keyButton.getAttribute("data-display");
+// 		let isOperator = keyButton.getAttribute("class");
+// 		let isEnter = keyButton.getAttribute("data-key");
+
+// 		if (isBackspace == "Backspace") {
+// 			let updatedInput = input.slice(0, input.length - 1);
+// 			input = updatedInput;
+// 			displayText.innerText = input;
+
+// 		} else if (isDisplayEligible == "yes" && input.length < 9) {
+// 			if (currentOperationValue !== 0) {
+// 				resetGlobal();
+// 			}
+// 			input += keyButton.innerText;
+// 			displayText.innerText = input;
+// 		}
+// } else if (isOperator == "operator button") {
+// 	operatorValue = keyButton.getAttribute("data-key");
+// 	mountInitialValues();
+// 	displayText.innerText = input;
+// }
+// } else if (isEnter == "Enter") {
+// 	startOperation();
+// }
+// 	}
+// }
+
+//if input is blank and operator is * or / then second input = 1
