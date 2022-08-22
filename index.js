@@ -101,13 +101,13 @@ calcButtons.forEach((button) => {
 operatorButtons.forEach((button) => {
 	button.addEventListener("click", (e) => {
 		operatorValue = e.target.getAttribute("data-key");
-		mountInitialValues(e);
+		startOperations(e);
 	});
 });
 
 clearButton.addEventListener("click", resetGlobal);
 
-// enterButton.addEventListener("click", startOperation);
+// enterButton.addEventListener("click", endOperation);
 
 //DOM Functions
 
@@ -128,7 +128,7 @@ function clickSupport(e) {
 
 // Calculator Procedure Functions
 
-function mountInitialValues(e) {
+function startOperations(e) {
 
 	if (operationsCount == 0) { 
 		if (+input == 0) {
@@ -182,7 +182,7 @@ function mountInitialValues(e) {
 	}
 }
 
-// function startOperation () {
+// function endOperation () {
 // 	secondInputValue = +input;
 // 	displaySubtext.innerText += ` ${secondInputValue}`;
 // 	currentOperationValue = operate(
@@ -231,7 +231,7 @@ function resetGlobal() {
 // 	displayText.innerText = input;
 // }
 // } else if (isEnter == "Enter") {
-// 	startOperation();
+// 	endOperation();
 // }
 // 	}
 // }
