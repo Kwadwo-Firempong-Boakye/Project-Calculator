@@ -161,7 +161,11 @@ function keyboardSupport(e) {
 			}
 			input += keyButton.innerText;
 
-			if (input.includes(".")) {}
+			if (input.includes(".")) {
+				decimal.setAttribute("data-display", "no");
+			} else {
+				decimal.setAttribute("data-display", "yes");
+			}
 
 			displayText.innerText = input;
 
