@@ -92,6 +92,7 @@ let operatorButtons = document.querySelectorAll(".operator");
 const enterButton = document.querySelector(".enter");
 const clearButton = document.querySelector(".clear");
 const backspace = document.querySelector(".backspace");
+let decimal = document.querySelector(".decimal");
 
 //DOM Event Listeners
 window.addEventListener("keydown", keyboardSupport);
@@ -126,9 +127,16 @@ function clickSupport(e) {
 		if (endOperationCount != 0 && operateButtonPressCount == 0) {
 			resetGlobal();
 		}
-		input += clickedButton.innerText;
-	}
 
+		input += clickedButton.innerText;
+
+		if (input.includes(".")) {
+			decimal.setAttribute("data-display", "no");
+		} else {
+			decimal.setAttribute("data-display", "yes");
+		}
+			
+	}
 	displayText.innerText = input;
 }
 
@@ -152,6 +160,9 @@ function keyboardSupport(e) {
 				resetGlobal();
 			}
 			input += keyButton.innerText;
+
+			if (input.includes(".")) {}
+
 			displayText.innerText = input;
 
 		} else if (isOperator == "operator button") {
@@ -232,7 +243,6 @@ function startOperations() {
 			displayText.innerText = input;
 
 		}
-
 	}
 }
 
@@ -254,7 +264,7 @@ function resetGlobal() {
 	tempOperatorValue = undefined;
 	currentOperationValue = 0;
 	operationsCount = 0;
-	endOperationCount = 0
+	endOperationCount = 0;
 	displayText.innerText = currentOperationValue;
 	displaySubtext.innerText = currentOperationValue;
 	operateButtonPressCount = 0;
