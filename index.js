@@ -6,6 +6,8 @@ let operatorValue;
 let tempOperatorValue;
 let currentOperationValue = 0;
 let operationsCount = 0;
+let endOperationCount = 0;
+let operateButtonClickCount = 0
 
 //Calculator Operator Functions
 
@@ -73,7 +75,7 @@ const operate = function (firstInput, operator, secondInput) {
 	//Limit Output Length
 
 	if (output.toString().length > 9) {
-		return output.toExponential(4);
+		return output.toPrecision(5);
 	} else {
 		return output;
 	}
@@ -101,13 +103,13 @@ calcButtons.forEach((button) => {
 operatorButtons.forEach((button) => {
 	button.addEventListener("click", (e) => {
 		operatorValue = e.target.getAttribute("data-key");
-		startOperations(e);
+		startOperations();
 	});
 });
 
 clearButton.addEventListener("click", resetGlobal);
 
-// enterButton.addEventListener("click", endOperation);
+enterButton.addEventListener("click", endOperation);
 
 //DOM Functions
 
@@ -120,6 +122,9 @@ function clickSupport(e) {
 		let updatedInput = input.slice(0, input.length - 1);
 		input = updatedInput;
 	} else if (isDisplayEligible == "yes" && input.length < 9) {
+		if (endOperationCount != 0 && operateButtonClickCount == 0) {
+			resetGlobal();
+		}
 		input += clickedButton.innerText;
 	}
 
@@ -128,9 +133,12 @@ function clickSupport(e) {
 
 // Calculator Procedure Functions
 
-function startOperations(e) {
+function startOperations() {
+
+	operateButtonClickCount++;
 
 	if (operationsCount == 0) { 
+
 		if (+input == 0) {
 			displaySubtext.innerText = `${currentOperationValue} ${operatorValue}`;
 			input = "";
@@ -148,6 +156,12 @@ function startOperations(e) {
 
 			firstInputValue = +input;
 			currentOperationValue = operate(firstInputValue, tempOperatorValue, currentOperationValue);
+
+			if (currentOperationValue.length > 9) {
+				let fixedLength = (+currentOperationValue).toPrecision(5);
+				currentOperationValue = fixedLength;
+			}
+
 			displaySubtext.innerText = `${currentOperationValue} ${operatorValue}`;
 			input = "";
 			displayText.innerText = input;
@@ -171,6 +185,12 @@ function startOperations(e) {
 				tempOperatorValue,
 				+secondInputValue
 			);
+
+			if (currentOperationValue.length > 9) {
+				let fixedLength = (+currentOperationValue).toPrecision(5);
+				currentOperationValue = fixedLength;
+			}
+
 			displaySubtext.innerText = `${currentOperationValue} ${operatorValue}`;
 			tempOperatorValue = operatorValue;
 			input = "";
@@ -178,28 +198,28 @@ function startOperations(e) {
 
 		}
 
-
 	}
 }
 
-// function endOperation () {
-// 	secondInputValue = +input;
-// 	displaySubtext.innerText += ` ${secondInputValue}`;
-// 	currentOperationValue = operate(
-// 		firstInputValue,
-// 		operatorValue,
-// 		secondInputValue
-// 	);
-// 	displayText.innerText = currentOperationValue;
-// 	input = "";
-// }
+function endOperation () {
+	//display currentvalue in main display and subdisplay, set input to empty, set operatorvalue to empty
+	startOperations();
+	displayText.innerText = currentOperationValue;
+	displaySubtext.innerText = currentOperationValue;
+	endOperationCount ++;
+	operateButtonClickCount = 0;
+	
+}
 
 function resetGlobal() {
 	input = "";
-	firstInputValue = 0;
-	secondInputValue = 0;
-	operatorValue = "";
+	firstInputValue;
+	secondInputValue;
+	operatorValue;
+	tempOperatorValue;
 	currentOperationValue = 0;
+	operationsCount = 0;
+	endOperationCount = 0
 	displayText.innerText = currentOperationValue;
 	displaySubtext.innerText = currentOperationValue;
 }
@@ -235,5 +255,3 @@ function resetGlobal() {
 // }
 // 	}
 // }
-
-//if input is blank and operator is * or / then second input = 1
