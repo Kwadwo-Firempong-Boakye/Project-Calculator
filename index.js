@@ -93,6 +93,7 @@ const enterButton = document.querySelector(".enter");
 const clearButton = document.querySelector(".clear");
 const backspace = document.querySelector(".backspace");
 let decimal = document.querySelector(".decimal");
+let negativePositive = document.querySelector(".corner");
 
 //DOM Event Listeners
 window.addEventListener("keydown", keyboardSupport);
@@ -111,6 +112,8 @@ operatorButtons.forEach((button) => {
 clearButton.addEventListener("click", resetGlobal);
 
 enterButton.addEventListener("click", endOperation);
+
+negativePositive.addEventListener("click", negate);
 
 //DOM Functions
 
@@ -274,3 +277,14 @@ function resetGlobal() {
 	operateButtonPressCount = 0;
 }
 
+function negate() {
+	let neg = "-";
+	if (Math.sign(input) > 0) {
+		input = neg.concat(input);
+	} else if (Math.sign(input) < 0) {
+		input = input.slice(1);
+	} else if (input ="") {
+		return
+	}
+	displayText.innerText = input;
+}
