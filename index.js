@@ -8,6 +8,7 @@ let currentOperationValue = 0;
 let operationsCount = 0;
 let endOperationCount = 0;
 let operateButtonPressCount = 0
+let isZeroInput = "no";
 
 //Calculator Operator Functions
 
@@ -94,6 +95,7 @@ const clearButton = document.querySelector(".clear");
 const backspace = document.querySelector(".backspace");
 let decimal = document.querySelector(".decimal");
 let negativePositive = document.querySelector(".corner");
+let fraction = document.querySelector(".special-operator-1");
 
 //DOM Event Listeners
 window.addEventListener("keydown", keyboardSupport);
@@ -114,6 +116,8 @@ clearButton.addEventListener("click", resetGlobal);
 enterButton.addEventListener("click", endOperation);
 
 negativePositive.addEventListener("click", negate);
+
+fraction.addEventListener("click", turnFraction);
 
 //DOM Functions
 
@@ -197,14 +201,17 @@ function startOperations() {
 			input = "";
 			displayText.innerText = input;
 			tempOperatorValue = operatorValue;
+			isZeroInput = "yes";
 
 		} else {
 			if (tempOperatorValue === undefined) {
 				tempOperatorValue = operatorValue;
 			}
 
-			if (currentOperationValue == 0 && (operatorValue == "*" || operatorValue == "/")) {
+			if (currentOperationValue == 0 && (operatorValue == "*" || operatorValue == "/") && isZeroInput == "no") {
 				currentOperationValue = 1;
+			} else if (currentOperationValue == 0 && (operatorValue == "*" || operatorValue == "/") && isZeroInput == "yes") {
+				currentOperationValue = 0;
 			}
 
 			firstInputValue = +input;
@@ -219,6 +226,7 @@ function startOperations() {
 			input = "";
 			displayText.innerText = input;
 			tempOperatorValue = operatorValue;
+			isZeroInput = "no";
 
 		}
 
@@ -287,4 +295,8 @@ function negate() {
 		return
 	}
 	displayText.innerText = input;
+}
+
+function turnFraction () {
+
 }
