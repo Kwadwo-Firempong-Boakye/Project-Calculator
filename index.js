@@ -359,11 +359,11 @@ function rootThis () {
 	let rootResult
 	if (input != "") {
 		rootResult = (Math.sqrt(+input));
-		currentOperationValue = rootResult.toFixed(3);
+		currentOperationValue = rootResult.toPrecision(5);
 		
 	} else {
 		rootResult = (Math.sqrt(currentOperationValue));
-		currentOperationValue = rootResult.toFixed(3);
+		currentOperationValue = rootResult.toPrecision(5);
 	}
 
 	displaySubtext.innerText = `${currentOperationValue}`;
