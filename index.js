@@ -97,6 +97,8 @@ let decimal = document.querySelector(".decimal");
 let negativePositive = document.querySelector(".corner");
 let fraction = document.querySelector(".special-operator-1");
 let exponential = document.querySelector(".special-operator-2");
+let squareRoot = document.querySelector(".special-operator-3");
+
 
 //DOM Event Listeners
 window.addEventListener("keydown", keyboardSupport);
@@ -121,6 +123,9 @@ negativePositive.addEventListener("click", negate);
 fraction.addEventListener("click", turnFraction);
 
 exponential.addEventListener("click", exponentThis);
+
+squareRoot.addEventListener("click", rootThis);
+
 
 //DOM Functions
 
@@ -343,9 +348,28 @@ function exponentThis () {
 	}
 
 	displaySubtext.innerText = `${currentOperationValue}`;
-		tempOperatorValue = operatorValue;
-		input = "";
-		displayText.innerText = currentOperationValue;
-		endOperationCount++;
-		operateButtonPressCount = 0;
+	tempOperatorValue = operatorValue;
+	input = "";
+	displayText.innerText = currentOperationValue;
+	endOperationCount++;
+	operateButtonPressCount = 0;
+}
+
+function rootThis () {
+	let rootResult
+	if (input != "") {
+		rootResult = (Math.sqrt(+input));
+		currentOperationValue = rootResult.toFixed(3);
+		
+	} else {
+		rootResult = (Math.sqrt(currentOperationValue));
+		currentOperationValue = rootResult.toFixed(3);
+	}
+
+	displaySubtext.innerText = `${currentOperationValue}`;
+	tempOperatorValue = operatorValue;
+	input = "";
+	displayText.innerText = currentOperationValue;
+	endOperationCount++;
+	operateButtonPressCount = 0;
 }
