@@ -119,10 +119,10 @@ a:hover {
     cursor: pointer;
 }
 
-@media (hover: hover) {
+@media only screen and (max-width: 1024px) {
     .button:hover {
-        background-color: #06405d;
-        cursor: pointer;
+        background-color: transparent;
+        /* cursor: pointer; */
     }
 }
 
