@@ -118,6 +118,10 @@ a:hover {
     font-size: 25px;
 }
 
+.button sup {
+    font-size: 16px;
+}
+
 .number {
     background-color: #022c41;
 }

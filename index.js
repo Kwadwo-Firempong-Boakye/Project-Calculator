@@ -32,8 +32,8 @@ const divide = function (firstInput, secondInput) {
 	}
 };
 
-const exponent = function (firstInput, secondInput) {
-	return Math.pow(firstInput, secondInput);
+const exponent = function (firstInput) {
+	return Math.pow(firstInput, 2);
 };
 
 const root = function (firstInput) {
@@ -96,6 +96,7 @@ const backspace = document.querySelector(".backspace");
 let decimal = document.querySelector(".decimal");
 let negativePositive = document.querySelector(".corner");
 let fraction = document.querySelector(".special-operator-1");
+let exponential = document.querySelector(".special-operator-2");
 
 //DOM Event Listeners
 window.addEventListener("keydown", keyboardSupport);
@@ -118,6 +119,8 @@ enterButton.addEventListener("click", endOperation);
 negativePositive.addEventListener("click", negate);
 
 fraction.addEventListener("click", turnFraction);
+
+exponential.addEventListener("click", exponentThis);
 
 //DOM Functions
 
@@ -259,7 +262,6 @@ function startOperations() {
 }
 
 function endOperation() {
-	//display currentvalue in main display and subdisplay, set input to empty, set operatorvalue to empty
 	startOperations();
 	displayText.innerText = currentOperationValue;
 	displaySubtext.innerText = currentOperationValue;
@@ -332,4 +334,18 @@ function turnFraction() {
 	
 }
 
-///SOLVE TURN FRACTION USE ON OUTPUT AND IN MOTION
+function exponentThis () {
+	if (input != "") {
+		currentOperationValue = (Math.pow(+input, 2));
+		
+	} else {
+		currentOperationValue = (Math.pow(currentOperationValue, 2));
+	}
+
+	displaySubtext.innerText = `${currentOperationValue}`;
+		tempOperatorValue = operatorValue;
+		input = "";
+		displayText.innerText = currentOperationValue;
+		endOperationCount++;
+		operateButtonPressCount = 0;
+}
