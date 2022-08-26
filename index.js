@@ -347,10 +347,14 @@ function exponentThis () {
 		currentOperationValue = (Math.pow(currentOperationValue, 2));
 	}
 
+	if (currentOperationValue.toString().length > 8) {
+		displayText.innerText = currentOperationValue.toPrecision(3);
+	} else {
+		displayText.innerText = currentOperationValue;
+	}
 	displaySubtext.innerText = `${currentOperationValue}`;
 	tempOperatorValue = operatorValue;
 	input = "";
-	displayText.innerText = currentOperationValue;
 	endOperationCount++;
 	operateButtonPressCount = 0;
 }
